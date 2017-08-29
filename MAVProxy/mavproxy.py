@@ -9,7 +9,7 @@ Released under the GNU GPL version 3 or later
 
 import sys, os, time, socket, signal
 import fnmatch, errno, threading
-import serial, Queue, select
+import serial, queue, select
 import traceback
 import select
 import shlex
@@ -19,6 +19,8 @@ from MAVProxy.modules.lib import textconsole
 from MAVProxy.modules.lib import rline
 from MAVProxy.modules.lib import mp_module
 from MAVProxy.modules.lib import dumpstacks
+
+from imp import reload
 
 # adding all this allows pyinstaller to build a working windows executable
 # note that using --hidden-import does not work for these modules
@@ -986,8 +988,8 @@ if __name__ == '__main__':
     mpstate.command_map = command_map
     mpstate.continue_mode = opts.continue_mode
     # queues for logging
-    mpstate.logqueue = Queue.Queue()
-    mpstate.logqueue_raw = Queue.Queue()
+    mpstate.logqueue = queue.Queue()
+    mpstate.logqueue_raw = queue.Queue()
 
 
     if opts.speech:
@@ -1065,7 +1067,7 @@ if __name__ == '__main__':
     heartbeat_period = mavutil.periodic_event(1)
     heartbeat_check_period = mavutil.periodic_event(0.33)
 
-    mpstate.input_queue = Queue.Queue()
+    mpstate.input_queue = queue.Queue()
     mpstate.input_count = 0
     mpstate.empty_input_count = 0
     if opts.setup:
